@@ -1,3 +1,5 @@
+'use client'; // Marca o componente inteiro como Cliente
+
 import '@/app/globals.css';
 import React, { useState, FormEvent, Suspense, useEffect } from 'react';
 import { signIn } from 'next-auth/react';
