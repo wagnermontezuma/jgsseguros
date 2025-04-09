@@ -1,22 +1,43 @@
-'use client';
-
 import '@/app/globals.css';
-import React, { useState, FormEvent } from 'react';
+import React, { useState, FormEvent, Suspense, useEffect } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 
-export default function LoginPage() {
+// ----- Novo Componente: LoginClientLogic -----
+// Componente interno que realmente usa o hook
+function LoginFormAndError() {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams(); // Agora seguro dentro do Suspense
+  const initialError = searchParams.get('error'); // Lê o erro inicial da URL
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(searchParams.get('error'));
+  // Estado de erro começa com o parâmetro da URL, se existir
+  const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  // Mapeia códigos de erro para mensagens amigáveis (movido para cá)
+  const errorMessages: { [key: string]: string } = {
+      Configuration: "Erro de configuração de autenticação no servidor.",
+      AccessDenied: "Acesso negado.",
+      Verification: "O token de verificação expirou ou já foi usado.",
+      CredentialsSignin: "Email ou senha inválidos.",
+      Default: "Falha no login. Verifique suas credenciais."
+      // Adicione outros erros comuns do NextAuth se necessário
+  };
+
+  // Define o erro inicial baseado na URL *depois* do componente montar no cliente
+  useEffect(() => {
+    if (initialError) {
+      setError(errorMessages[initialError] || errorMessages.Default);
+    }
+  }, [initialError]); // Executa quando initialError muda
+
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setError(null);
+    setError(null); // Limpa erro anterior ao tentar novamente
     setIsLoading(true);
 
     try {
@@ -26,53 +47,37 @@ export default function LoginPage() {
         password: password,
       });
 
-      console.log("SignIn Result:", result); // Log para depuração
+      console.log("SignIn Result:", result);
 
-      // ---- Simplificação Temporária para Teste ----
       if (result && !result.error) {
-        console.log("Login aparentemente OK, tentando redirecionar...");
+        console.log("Login OK, redirecionando...");
         router.push('/admin/dashboard');
-        // Não precisa de router.refresh() geralmente com push
+        // Não precisa setIsLoading(false) aqui, a página vai mudar
+        return; // Sai da função após redirecionar
       } else {
-        let errorMessage = 'Credenciais inválidas ou erro inesperado.';
-        if (result?.error === 'Configuration') {
-          errorMessage = 'Erro de configuração de autenticação.';
-        } else if (result?.error) {
-          errorMessage = `Erro: ${result.error}`;
-        }
-        setError(errorMessage);
+        // Define o erro baseado no resultado do signIn
+        const signInError = result?.error || 'Default';
+        setError(errorMessages[signInError] || errorMessages.Default);
         console.error('Login failed:', result?.error);
-        setIsLoading(false); // Garante que o botão reative em caso de erro
       }
-      // ---- Fim da Simplificação ----
-
     } catch (err) {
       console.error("Erro inesperado durante signIn:", err);
       setError("Ocorreu um erro inesperado durante o login.");
-      setIsLoading(false);
+    } finally {
+        setIsLoading(false); // Garante que isLoading seja false após tentativa
     }
-
-    // Não colocamos setIsLoading(false) aqui se o redirecionamento ocorrer
-    // A página será descarregada de qualquer forma.
   };
 
+  // O JSX do formulário e do erro vêm para cá
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100 px-4">
-      <div className="w-full max-w-md space-y-8">
-        <div className="text-center">
-          {/* Pode colocar o logo aqui */}
-          <Image src="/logo.png" alt="JGS Seguros" width={150} height={75} className="mx-auto mb-4" />
-          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-            Acessar Painel Administrativo
-          </h2>
+    <>
+      {error && (
+        <div className="rounded-md bg-red-50 p-4 mb-4">
+          <p className="text-sm text-red-700">{error}</p>
         </div>
-        <form className="mt-8 space-y-6 bg-white p-8 rounded-lg shadow-md" onSubmit={handleSubmit}>
-          {error && (
-            <div className="rounded-md bg-red-50 p-4 mb-4">
-              <p className="text-sm text-red-700">{error}</p>
-            </div>
-          )}
-          <div className="space-y-4 rounded-md shadow-sm">
+      )}
+      <form className="space-y-6" onSubmit={handleSubmit}>
+         <div className="space-y-4 rounded-md shadow-sm">
             <div>
               <label htmlFor="email-address" className="sr-only">Email</label>
               <input
@@ -112,7 +117,36 @@ export default function LoginPage() {
               {isLoading ? 'Entrando...' : 'Entrar'}
             </button>
           </div>
-        </form>
+      </form>
+    </>
+  );
+}
+
+// Componente exportado que envolve com Suspense
+function LoginClientLogic() {
+    return (
+        <Suspense fallback={<div className="text-center text-gray-500 p-4">Carregando...</div>}> {/* Suspense aqui */}
+             <LoginFormAndError />
+        </Suspense>
+    )
+}
+
+// ----- Página Principal LoginPage -----
+// Pode até não precisar mais ser 'use client'
+export default function LoginPage() {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-gray-100 px-4">
+      <div className="w-full max-w-md space-y-8">
+        <div className="text-center">
+          <Image src="/logo.png" alt="JGS Seguros" width={150} height={75} className="mx-auto mb-4" />
+          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
+            Acessar Painel Administrativo
+          </h2>
+        </div>
+        <div className="mt-8 bg-white p-8 rounded-lg shadow-md">
+          {/* Renderizamos o componente que contém Suspense e a lógica cliente */}
+          <LoginClientLogic />
+        </div>
       </div>
     </div>
   );
