@@ -12,6 +12,8 @@ const SimulationSection = () => {
   const [dependents, setDependents] = useState<RadioOption | null>(null);
   const [claimHistory, setClaimHistory] = useState<RadioOption | null>(null);
   const [paymentForm, setPaymentForm] = useState<PaymentOption | null>(null);
+  const [insuranceType, setInsuranceType] = useState('');
+  const [deductible, setDeductible] = useState('');
 
   const handleRadioClick = (
     setter: React.Dispatch<React.SetStateAction<any>>,
@@ -50,7 +52,7 @@ const SimulationSection = () => {
             <div className="absolute inset-0 bg-orange-50 rounded-lg z-0"></div>
             <div className="relative z-10 flex justify-center items-end h-full">
               <Image
-                src="/woman-laptop.png" // Coloque a imagem na pasta public
+                src="/logo.png" // Placeholder - /woman-laptop.png não encontrado em public/
                 alt="Mulher sorrindo sentada com laptop"
                 width={450} // Ajuste conforme a imagem original
                 height={600} // Ajuste conforme a imagem original
@@ -96,10 +98,12 @@ const SimulationSection = () => {
                   id="sim-insurance-type"
                   name="insuranceType"
                   required
+                  value={insuranceType}
+                  onChange={(e) => setInsuranceType(e.target.value)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white text-sm appearance-none pr-8 bg-no-repeat bg-right"
                   style={{ backgroundImage: `url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="%23FF5C1B"%3E%3Cpath fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /%3E%3C/svg%3E')`, backgroundPosition: 'right 0.75rem center', backgroundSize: '1.5em 1.5em'}}
                 >
-                  <option value="" disabled selected>Escolha seu seguro</option>
+                  <option value="" disabled>Escolha seu seguro</option>
                   {/* Adicionar opções reais aqui */}
                   <option value="viagem">Seguro Viagem</option>
                   <option value="vida">Seguro de Vida</option>
@@ -124,10 +128,12 @@ const SimulationSection = () => {
                   id="sim-deductible"
                   name="deductible"
                   required
+                  value={deductible}
+                  onChange={(e) => setDeductible(e.target.value)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white text-sm appearance-none pr-8 bg-no-repeat bg-right"
                   style={{ backgroundImage: `url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="%23FF5C1B"%3E%3Cpath fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /%3E%3C/svg%3E')`, backgroundPosition: 'right 0.75rem center', backgroundSize: '1.5em 1.5em'}}
                 >
-                  <option value="" disabled selected>Escolha uma opção</option>
+                  <option value="" disabled>Escolha uma opção</option>
                   {/* Adicionar opções reais aqui */}
                   <option value="baixa">Baixa</option>
                   <option value="media">Média</option>

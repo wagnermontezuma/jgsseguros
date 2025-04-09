@@ -1,6 +1,11 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
+// Log temporário para depuração
+console.log("--- Verificando .env DENTRO de auth.ts ---");
+console.log("NEXTAUTH_SECRET (auth.ts):", process.env.NEXTAUTH_SECRET ? "Carregada!" : "NÃO CARREGADA!");
+console.log("--- Fim Verificação (auth.ts) ---");
+
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
