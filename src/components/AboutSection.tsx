@@ -4,39 +4,51 @@ import { Building, Clock } from 'lucide-react'; // Ícones
 
 const AboutSection = () => {
   return (
-    <section id="a-jgs" className="py-16 md:py-24 bg-gray-100">
+    <section id="a-jgs" className="py-16 md:py-24 bg-white">
       <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          {/* Coluna de Texto */}
-          <div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
-              Quem somos
-            </h2>
-            <p className="text-lg text-gray-600 mb-4 leading-relaxed">
-              Com mais de 40 anos de tradição e expertise, a JGS Corretores de Seguros se consolida como sua parceira de confiança em proteção.
-            </p>
-            <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-              Somos especialistas em seguros de viagem, garantindo que suas aventuras pelo mundo sejam tranquilas e seguras. Oferecemos um atendimento personalizado e soluções sob medida para cada cliente, seja pessoa física ou jurídica.
-            </p>
-            <div className="flex items-center text-blue-600 space-x-4">
-              <Clock size={24} />
-              <span>Mais de 40 anos de experiência</span>
+        <h2 className="text-4xl md:text-5xl font-bold text-center text-black mb-6">
+          JGS: Inteligência nas Soluções de Seguros
+        </h2>
+        <div className="grid md:grid-cols-4 gap-8">
+          <div className="text-center">
+            <div className="bg-orange-500 rounded-full p-4 inline-block mb-4">
+              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3z"></path>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 2a10 10 0 100 20 10 10 0 000-20z"></path>
+              </svg>
             </div>
+            <h3 className="text-xl font-semibold">Experiência em Seguros</h3>
+            <p className="text-gray-600">Mais de 40 anos de experiência em seguros dos mais diversos tipos.</p>
           </div>
-
-          {/* Coluna de Imagem/Ilustração */}
-          <div className="relative h-64 md:h-80 rounded-lg overflow-hidden shadow-lg">
-            {/* Você pode substituir por uma imagem real */}
-            <div className="bg-blue-500 h-full flex items-center justify-center">
-              <Building size={80} className="text-white opacity-50" />
+          <div className="text-center">
+            <div className="bg-orange-500 rounded-full p-4 inline-block mb-4">
+              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3z"></path>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 2a10 10 0 100 20 10 10 0 000-20z"></path>
+              </svg>
             </div>
-             {/* Ou usar uma imagem: */}
-            {/* <Image
-              src="/imagem-sobre.jpg" // Coloque a imagem na pasta public
-              alt="Escritório da JGS Seguros"
-              fill
-              className="object-cover"
-            /> */}
+            <h3 className="text-xl font-semibold">Atendimento Personalizado 24h</h3>
+            <p className="text-gray-600">Atendimento rápido e eficiente onde e quando você precisar.</p>
+          </div>
+          <div className="text-center">
+            <div className="bg-orange-500 rounded-full p-4 inline-block mb-4">
+              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3z"></path>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 2a10 10 0 100 20 10 10 0 000-20z"></path>
+              </svg>
+            </div>
+            <h3 className="text-xl font-semibold">Estrutura de Ponta</h3>
+            <p className="text-gray-600">Nossa estrutura reflete o nosso compromisso em oferecer o melhor, sempre.</p>
+          </div>
+          <div className="text-center">
+            <div className="bg-orange-500 rounded-full p-4 inline-block mb-4">
+              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3z"></path>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 2a10 10 0 100 20 10 10 0 000-20z"></path>
+              </svg>
+            </div>
+            <h3 className="text-xl font-semibold">Maior corretora Norte e Nordeste</h3>
+            <p className="text-gray-600">A JGS domina o mercado de seguros no Norte e Nordeste do Brasil.</p>
           </div>
         </div>
       </div>

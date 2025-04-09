@@ -2,19 +2,68 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const HeroSection = () => {
+// Define a interface para as props
+interface HeroSectionProps {
+  title?: string;
+  subtitle?: string;
+  backgroundType?: 'image' | 'video' | 'gif';
+  backgroundSrc?: string;
+  // Adicione mais props se necessário (ex: logoSrc)
+}
+
+// Valores padrão caso as props não sejam fornecidas
+const defaultProps: Required<HeroSectionProps> = {
+  title: 'JGS seu companheiro<br />de viagem', // Use \n ou <br/> ? Optando por string pura e usando dangerouslySetInnerHTML
+  subtitle: 'Em todas as fases da vida com você',
+  backgroundType: 'image',
+  backgroundSrc: '/sunset-beach.png',
+};
+
+const HeroSection: React.FC<HeroSectionProps> = (props) => {
+  // Combina props recebidas com valores padrão
+  const { title, subtitle, backgroundType, backgroundSrc } = { ...defaultProps, ...props };
+
+  // Função para renderizar o fundo
+  const renderBackground = () => {
+    if (!backgroundSrc) return null;
+
+    switch (backgroundType) {
+      case 'video':
+        return (
+          <video
+            key={backgroundSrc} // Chave para forçar recriação se src mudar
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover z-0"
+          >
+            <source src={backgroundSrc} type="video/mp4" /> {/* Ajuste o type se necessário */}
+            Seu navegador não suporta vídeos HTML5.
+          </video>
+        );
+      case 'gif': // GIFs podem ser tratados como imagens normais
+      case 'image':
+      default:
+        return (
+          <Image
+            key={backgroundSrc} // Chave para forçar recriação se src mudar
+            src={backgroundSrc}
+            alt="Fundo do banner principal"
+            fill
+            className="object-cover z-0"
+            priority
+            quality={100}
+          />
+        );
+    }
+  };
+
   return (
     <div className="relative min-h-screen">
-      {/* Background Image & Overlay */}
+      {/* Background Image/Video & Overlay */}
       <div className="absolute inset-0 z-0">
-        <Image
-          src="/sunset-beach.png"
-          alt="Pôr do sol na praia"
-          fill
-          className="object-cover"
-          priority
-          quality={100}
-        />
+        {renderBackground()}
       </div>
       <div className="absolute inset-0 bg-black opacity-50 z-10" /> {/* Overlay escuro */}
 
@@ -73,12 +122,13 @@ const HeroSection = () => {
       {/* Centralização vertical e z-index */}
       <div className="relative z-20 container mx-auto px-4 flex flex-col items-center justify-center min-h-[80vh] text-center max-w-screen-lg">
         {/* Estilo do título ajustado */}
-        <h1 className="text-4xl md:text-6xl font-bold text-white drop-shadow-xl mb-4">
-          JGS seu companheiro<br />de viagem
-        </h1>
+        <h1 
+          className="text-4xl md:text-6xl font-bold text-white drop-shadow-xl mb-4"
+          dangerouslySetInnerHTML={{ __html: title.replace(/\n/g, '<br />') }} 
+        />
         {/* Estilo do subtítulo ajustado */}
         <p className="text-lg md:text-xl text-white drop-shadow mt-4">
-          Em todas as fases da vida com você
+          {subtitle}
         </p>
       </div>
     </div>
