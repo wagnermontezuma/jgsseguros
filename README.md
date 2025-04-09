@@ -112,4 +112,4 @@ Contribuições são bem-vindas! Por favor, abra uma issue para discutir mudanç
 
 ## Licença
 
-Este projeto é de propriedade da JGS Corretores de Seguros. Todos os direitos reservados. 
+Este projeto é de propriedade da JGS Corretores de Seguros. Todos os direitos reservados.
